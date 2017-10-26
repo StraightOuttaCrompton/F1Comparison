@@ -24,23 +24,11 @@ export default {
     justify-content: center;
   }
   @media all and (max-width: 1200px) {
-      body {
-          background-color: lightgreen;
-      }
   }
   @media all and (max-width: 1024px) {
-      body {
-          background-color: red;
-      }
   }
   @media all and (max-width: 768px) {
-      body {
-          background-color: yellow;
-      }
   }
   @media all and (max-width: 480px) {
-      body {
-          background-color: blue;
-      }
   }
 </style>
