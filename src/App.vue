@@ -58,6 +58,7 @@ export default {
 	}
 	.inner {
 	  max-width: 1000px;
+		width: 100%;
 	}
 </style>
 <style scoped>
