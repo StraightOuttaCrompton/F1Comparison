@@ -49,5 +49,4 @@ export class Driver {
     set nationality(value) {
         this._nationality = value;
     }
-
 }

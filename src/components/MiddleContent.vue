@@ -1,30 +1,17 @@
 <template>
   <div id="middleContent">
     <div class="inner column">
-      <div class="drivers">
-        <driver></driver>
-        <driver></driver>
-        <driver></driver>
-        <driver></driver>
-        <driver></driver>
-        <driver></driver>
-        <driver></driver>
-        <driver></driver>
-        <driver></driver>
-        <driver></driver>
-        <driver></driver>
-        <driver></driver>
-      </div>
+      <drivers></drivers>
     </div>
   </div>
 </template>
 
 <script>
-  import Driver from './Driver.vue'
+  import Drivers from './Drivers.vue'
   export default {
     name: 'middleContent',
     components: {
-      Driver,
+      Drivers,
     }
   }
 </script>
@@ -40,12 +27,4 @@
     flex-direction: column;
     justify-content: center;
   }
-  .drivers {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .drivers:nth-child(n) {
-    flex: 1;
-  }
-
 </style>
