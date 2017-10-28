@@ -23,12 +23,5 @@ export default {
     flex-direction: column;
     justify-content: center;
   }
-  @media all and (max-width: 1200px) {
-  }
-  @media all and (max-width: 1024px) {
-  }
-  @media all and (max-width: 768px) {
-  }
-  @media all and (max-width: 480px) {
-  }
+
 </style>
