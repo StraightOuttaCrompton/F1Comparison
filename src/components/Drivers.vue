@@ -1,28 +1,25 @@
 <template>
-    <div id="drivers">
-        <div class="driver">
+    <div class="driversContainer" >
+        <li class="driver" v-for="driver in driversArray">
             <div class="driverContainer">
-                <div class="driverId">driverId</div>
-                <div class="wikiURL">wikiURL</div>
-                <div class="firstName">firstName</div>
-                <div class="familyName">familyName</div>
-                <div class="dateOfBirth">dateOfBirth</div>
-                <div class="nationality">nationality</div>
+                <div class="driverId">driverId: {{ driver.driverId }}</div>
+                <div class="firstName">firstName: {{ driver.firstName }}</div>
+                <div class="familyName">familyName: {{ driver.familyName }}</div>
+                <div class="dateOfBirth">dateOfBirth: {{ driver.dateOfBirth }}</div>
+                <div class="nationality">nationality: {{ driver.nationality }}</div>
             </div>
-        </div>
+        </li>
+        
     </div>
 </template>
 
 <script>
-    import { Driver } from '../classes/driver';
+    import config from '../config'
     export default {
         name: 'drivers',
-        components: {
-            Driver,
-        },
-        data() {
+        data () {
             return  {
-                drivers: [],
+                driversArray: [],
                 loaded: false
             }
         },
@@ -30,36 +27,26 @@
             
         },
         created: function () {
-            console.log('wasssup');
             var convert = require('xml-js');
-            axios.get('http://ergast.com/api/f1/drivers')
+            var self = this;
+            axios.get(config.f1BaseUrl + '/drivers.json?limit=1000')
             .then(function (response) {
-                var xml = response.data;
-                var ob = JSON.parse(convert.xml2json(xml, {
-                compact: true,
-                spaces: 4
-                }));
-
-                ob.MRData.DriverTable.Driver.forEach(function (driver) {
-                    var _driver = new Driver(driver);
-                    this.drivers.push(_driver);
-                }, this);
-
-                this.loaded = true;
+                self.driversArray = response.data.MRData.DriverTable.Drivers;
+                self.loaded = true;
             })
             .catch(function (error) {
-                console.log(error);
+                console.error(error);
             });
         }
     }
 </script>
 
 <style scoped>
-    #drivers {
+    .driversContainer {
         display: flex;
         flex-wrap: wrap;
     }
-    #drivers:nth-child(n) {
+    .driversContainer:nth-child(n) {
         flex: 1;
     }
     .driver {
@@ -71,7 +58,7 @@
     .driver:nth-child(n) {
         flex: 1;
     }
-    .driverContainerdr {
+    .driverContainer {
         margin: 15%;
         min-width: 200px;
     }

@@ -4,9 +4,6 @@
 /*jshint esversion: 6 */
 import Vue from 'vue';
 import App from './App.vue';
-import {
-  Driver
-} from './classes/driver';
 
 new Vue({ // eslint-disable-line no-new
   el: '#app',
