@@ -2,11 +2,10 @@
     <div class="drivers" >
         <li class="driver" v-for="driver in driversArray">
             <div class="driverContainer">
-                <div class="item">driverId: {{ driver.driverId }}</div>
-                <div class="item">firstName: {{ driver.firstName }}</div>
-                <div class="item">familyName: {{ driver.familyName }}</div>
+                <div class="item">Name: {{ driver.givenName }} {{ driver.familyName }}</div>
                 <div class="item">dateOfBirth: {{ driver.dateOfBirth }}</div>
                 <div class="item">nationality: {{ driver.nationality }}</div>
+                <a class="item" :href="driver.url" target="_blank">More Info</a>
             </div>
         </li>
         <loader v-if="!loaded"></loader>
@@ -50,9 +49,6 @@
         display: flex;
         flex-wrap: wrap;
     }
-    .drivers:nth-child(n) {
-        flex: 1;
-    }
     .driver {
         display: flex;
         flex-direction: column;
@@ -72,5 +68,6 @@
     }
     .item {
         padding: 5px;
+        line-height: 20px;
     }
 </style>

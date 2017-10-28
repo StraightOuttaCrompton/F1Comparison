@@ -13,7 +13,7 @@ export default {
   name: 'app',
   components: {
     Top,
-    MiddleContent,
+    MiddleContent
   }
 }
 </script>
