@@ -22,7 +22,6 @@ export default {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		height: 100vh;
 	}
 	body, html {
 	width: 100%;
@@ -57,8 +56,10 @@ export default {
 		min-height: 100%;
 	}
 	.inner {
-	  max-width: 1000px;
+	  max-width: 1200px;
 		width: 100%;
+		height: 100%;
+		border: 1px solid #f1f1f1;
 	}
 </style>
 <style scoped>

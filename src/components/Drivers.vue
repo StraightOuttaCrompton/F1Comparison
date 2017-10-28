@@ -1,22 +1,27 @@
 <template>
-    <div class="driversContainer" >
+    <div class="drivers" >
         <li class="driver" v-for="driver in driversArray">
             <div class="driverContainer">
-                <div class="driverId">driverId: {{ driver.driverId }}</div>
-                <div class="firstName">firstName: {{ driver.firstName }}</div>
-                <div class="familyName">familyName: {{ driver.familyName }}</div>
-                <div class="dateOfBirth">dateOfBirth: {{ driver.dateOfBirth }}</div>
-                <div class="nationality">nationality: {{ driver.nationality }}</div>
+                <div class="item">driverId: {{ driver.driverId }}</div>
+                <div class="item">firstName: {{ driver.firstName }}</div>
+                <div class="item">familyName: {{ driver.familyName }}</div>
+                <div class="item">dateOfBirth: {{ driver.dateOfBirth }}</div>
+                <div class="item">nationality: {{ driver.nationality }}</div>
             </div>
         </li>
+        <loader v-if="!loaded"></loader>
         
     </div>
 </template>
 
 <script>
     import config from '../config'
+    import Loader from './Loader.vue'
     export default {
         name: 'drivers',
+        components: {
+            Loader
+        },
         data () {
             return  {
                 driversArray: [],
@@ -27,9 +32,8 @@
             
         },
         created: function () {
-            var convert = require('xml-js');
             var self = this;
-            axios.get(config.f1BaseUrl + '/drivers.json?limit=1000')
+            axios.get(config.f1BaseUrl + '/drivers.json?limit=100')
             .then(function (response) {
                 self.driversArray = response.data.MRData.DriverTable.Drivers;
                 self.loaded = true;
@@ -42,11 +46,11 @@
 </script>
 
 <style scoped>
-    .driversContainer {
+    .drivers {
         display: flex;
         flex-wrap: wrap;
     }
-    .driversContainer:nth-child(n) {
+    .drivers:nth-child(n) {
         flex: 1;
     }
     .driver {
@@ -54,12 +58,19 @@
         flex-direction: column;
         justify-content: center;
         width: 100%;
+        min-width: 300px;
     }
     .driver:nth-child(n) {
         flex: 1;
     }
     .driverContainer {
-        margin: 15%;
-        min-width: 200px;
+        margin: 5%;
+        padding: 20px 10px;    
+        border: 1px solid #c7c7c7;
+        border-radius: 6px;
+		background-color: #E8EAF6;
+    }
+    .item {
+        padding: 5px;
     }
 </style>

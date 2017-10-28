@@ -1,6 +1,6 @@
 <template>
-  <div id="middleContent">
-    <div class="inner column">
+  <div class="middleContent">
+    <div class="inner">
       <drivers></drivers>
     </div>
   </div>
@@ -17,12 +17,12 @@
 </script>
 
 <style scoped>
-  #middleContent {
+  .middleContent {
     display: flex;
     justify-content: center;
-    height: 100%;
+    flex: 1;
   }
-  .column {
+  .inner {
     display: flex;
     flex-direction: column;
     justify-content: center;

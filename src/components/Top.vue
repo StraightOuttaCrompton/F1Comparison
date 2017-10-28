@@ -1,6 +1,9 @@
 <template>
-  <div id="top" class="flex center">
-    <div  class="top">HEADER</div>
+  <div class="top">
+    <div class="flexCenter">
+    <div  class="title">F1 Comparison</div>
+
+    </div>
   </div>
 </template>
 
@@ -11,12 +14,20 @@ export default {
 </script>
 
 <style scoped>
-  #top {
+  .top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
-    background-color: black;
+    background-color: #3F51B5;
     height: 60px;
   }
-  .top {
+  .flex {
+    display: flex;
+    justify-content: center;
+  }
+  .title {
+    color: white;
     text-align: center;
   }
 </style>
