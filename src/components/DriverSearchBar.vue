@@ -1,21 +1,38 @@
 <template>
     <form>
-        <input v-model="inputString" type="text" name="search" placeholder="Search for drivers...">
-        <drivers ref="drivers" class="middleContentItem"></drivers>
+        <div class="driverSearchBarContainer"> 
+            <input v-model="inputString" type="text" name="search" placeholder="Search for drivers..." autocomplete="off">
+            <div class="results" >
+                <li class="driver" v-for="driver in drivers" v-on:click="selectDriver(driver)">
+                    <div  class="driverContainer" v-if="driver.driverIndex < 5 || !inputString">
+                        <div class="item">Name: {{ driver.givenName }} {{ driver.familyName }}</div>
+                        <div class="item">dateOfBirth: {{ driver.dateOfBirth }}</div>
+                        <div class="item">nationality: {{ driver.nationality }}</div>
+                        <div class="item">Index: {{ driver.driverIndex }}</div>
+                        <a class="item" :href="driver.url" target="_blank">More Info</a>
+                    </div>
+                </li>
+                <loader v-if="!loaded"></loader>
+            </div>
+        </div>
+        
     </form>
 </template>
 
+
 <script>
-    import Drivers from './Drivers.vue'
+    import config from '../config'
+    import Loader from './Loader.vue'
     export default {
         name: 'driverSearchBar',
         components: {
-            Drivers
+            Loader
         },
         data () {
             return  {
                 inputString: "",
-                drivers: []
+                drivers: [],
+                loaded: false
             }
         },
         watch: {
@@ -24,11 +41,17 @@
             }
         },
         methods: {
-            searchDrivers: function () {
-                this.drivers = this.$refs.drivers._data.driversArray;
-                this.indexDrivers();
-                this.$refs.drivers.sortDriversByIndex();
+            selectDriver: function (driver) {
+                this.inputString = "";
+                console.log(driver);
             },
+            searchDrivers: function () {
+                this.indexDrivers();
+                this.sortDriversByIndex();
+            },
+            /* TODO
+            * Add indexing for longest consecutive matching string
+            */
             indexDrivers: function () {
                 var self = this;
                 this.drivers.forEach(function(driver) {
@@ -73,8 +96,30 @@
                     });
                     driver.driverIndex = minIndex;
                 });
+            },
+            sortDriversByIndex: function () {
+                this.drivers.sort(function(a, b) {
+                    var i = a.driverIndex - b.driverIndex;
+                    if (i == 0) {
+                        if(a.familyName < b.familyName) return -1;
+                        if(a.familyName > b.familyName) return 1;
+                        return 0;
+                    }
+                    return i;
+                });
             }
 
+        },
+        created: function () {
+            var self = this;
+            axios.get(config.f1BaseUrl + '/drivers.json?limit=10')
+            .then(function (response) {
+                self.drivers = response.data.MRData.DriverTable.Drivers;
+                self.loaded = true;
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
         }
     }
 
@@ -117,6 +162,9 @@
 </script>
 
 <style scoped>
+    .driverSearchBarContainer {
+        position: relative;
+    }
     input[type=text] {
         width: 200px;
         box-sizing: border-box;
@@ -133,6 +181,54 @@
     }
 
     input[type=text]:focus {
+        width: 40%;
+    }
+    input[type=text]:focus + .results {
+        height: 400px;
+        opacity: 1;
+    }
+    .results {
+        display: flex;
+        flex-wrap: wrap;    
+        position: absolute;
+        top: 50px;
+        overflow: auto;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        border: 1px solid #c7c7c7;
+        width: 40%;
+        height: 0px;
+        opacity: 0;
+        transition: height 0.2s ease-in-out;
+    }
+    .driver {
+        display: flex;
+        justify-content: center;
         width: 100%;
+        min-width: 275px;
+        cursor: pointer;
+        margin: 0px;
+        background-color: #fcfcfc;
+    }
+    .driver:nth-child(n) {
+        flex: 1;
+        border-bottom: 1px solid #c7c7c7;
+    }
+    .driver:last-child {
+        border: none;
+    }
+    .driver:hover {
+        background-color: rgba(197, 202, 233, 0.41);
+    }
+    .driverContainer {
+        width: 50%;
+        text-align: start;
+        padding: 25px 15px;
+    }
+    .item {
+        padding: 5px;
+        line-height: 20px;
     }
 </style>
+

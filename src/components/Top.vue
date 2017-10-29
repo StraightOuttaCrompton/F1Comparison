@@ -21,6 +21,7 @@ export default {
     width: 100%;
     background-color: #3F51B5;
     height: 60px;
+    border-bottom: 2px solid #c9c9c9;
   }
   .flex {
     display: flex;

@@ -25,7 +25,9 @@
   .inner {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+	  max-width: 1200px;
+		width: 100%;
+		border: 1px solid #f1f1f1;
   }
   .middleContentItem:nth-child(n) {
     margin-top: 25px;

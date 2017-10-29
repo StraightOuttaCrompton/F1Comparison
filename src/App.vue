@@ -22,16 +22,18 @@ export default {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		flex: 1;
 	}
 	body, html {
-	width: 100%;
-	height: 100%;
-	font-family: 'Avenir', Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-	margin: 0px;
+		width: 100%;
+		min-height: 100vh;
+		font-family: 'Avenir', Helvetica, Arial, sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-align: center;
+		color: #2c3e50;
+		margin: 0px;
+		display: flex;
 	}
 
 	h1, h2 {
@@ -54,12 +56,6 @@ export default {
 	.fill {
 		min-width: 100%;
 		min-height: 100%;
-	}
-	.inner {
-	  max-width: 1200px;
-		width: 100%;
-		height: 100%;
-		border: 1px solid #f1f1f1;
 	}
 </style>
 <style scoped>
