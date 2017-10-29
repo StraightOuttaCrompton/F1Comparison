@@ -1,7 +1,7 @@
 <template>
     <form>
         <div class="driverSearchBarContainer"> 
-            <input v-model="inputString" type="text" name="search" placeholder="Search for drivers..." autocomplete="off">
+            <input v-model="inputString" type="text" name="search" placeholder="Search for drivers..." autocomplete="off" autofocus>
             <div class="results">
                 <li class="driver" v-for="driver in drivers" v-on:click="selectDriver(driver)" v-if="driver.driverIndex < 5">
                     <div  class="driverContainer" >
@@ -12,7 +12,7 @@
                         <a class="item" :href="driver.url" target="_blank">More Info</a>
                     </div>
                 </li>
-                <loader v-if="!loaded"></loader>
+                <loader v-if="!loaded && inputString"></loader>
             </div>
         </div>
         
@@ -44,6 +44,7 @@
         methods: {
             selectDriver: function (driver) {
                 this.inputString = "";
+                console.log('selected');
                 EventBus.$emit('driver_selected', driver);
             },
             searchDrivers: function () {
@@ -184,10 +185,6 @@
     input[type=text]:focus {
         width: 40%;
     }
-    input[type=text]:focus + .results {
-        height: 400px;
-        opacity: 1;
-    }
     .results {
         display: flex;
         flex-wrap: wrap;    
@@ -197,11 +194,8 @@
         left: 0;
         right: 0;
         margin: 0 auto;
-        
         width: 40%;
-        height: 0px;
-        opacity: 0;
-        transition: height 0.2s ease-in-out;
+        height: 400px;
     }
     .driver {
         display: flex;
