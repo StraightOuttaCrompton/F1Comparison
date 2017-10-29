@@ -2,18 +2,15 @@
   <div class="middleContent">
     <div class="inner">
       <div class="middleContentItem"><driverSearchBar></driverSearchBar></div>
-      <drivers class="middleContentItem"></drivers>
     </div>
   </div>
 </template>
 
 <script>
   import DriverSearchBar from './DriverSearchBar.vue'
-  import Drivers from './Drivers.vue'
   export default {
     name: 'middleContent',
     components: {
-      Drivers,
       DriverSearchBar
     }
   }
