@@ -2,9 +2,9 @@
     <form>
         <div class="driverSearchBarContainer"> 
             <input v-model="inputString" type="text" name="search" placeholder="Search for drivers..." autocomplete="off">
-            <div class="results" >
-                <li class="driver" v-for="driver in drivers" v-on:click="selectDriver(driver)">
-                    <div  class="driverContainer" v-if="driver.driverIndex < 5 || !inputString">
+            <div class="results">
+                <li class="driver" v-for="driver in drivers" v-on:click="selectDriver(driver)" v-if="driver.driverIndex < 5">
+                    <div  class="driverContainer" >
                         <div class="item">Name: {{ driver.givenName }} {{ driver.familyName }}</div>
                         <div class="item">dateOfBirth: {{ driver.dateOfBirth }}</div>
                         <div class="item">nationality: {{ driver.nationality }}</div>
@@ -21,7 +21,8 @@
 
 
 <script>
-    import config from '../config'
+    import EventBus from '../eventbus.js'
+    import config from '../config.js'
     import Loader from './Loader.vue'
     export default {
         name: 'driverSearchBar',
@@ -43,7 +44,7 @@
         methods: {
             selectDriver: function (driver) {
                 this.inputString = "";
-                console.log(driver);
+                EventBus.$emit('driver_selected', driver);
             },
             searchDrivers: function () {
                 this.indexDrivers();
@@ -147,13 +148,13 @@
         // Fill in the rest of the matrix
         for (i = 1; i <= b.length; i++) {
             for (j = 1; j <= a.length; j++) {
-            if (b.charAt(i-1) == a.charAt(j-1)) {
-                matrix[i][j] = matrix[i-1][j-1];
-            } else {
-                matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
-                                        Math.min(matrix[i][j-1] + 1, // insertion
-                                                matrix[i-1][j] + 1)); // deletion
-            }
+                if (b.charAt(i-1) == a.charAt(j-1)) {
+                    matrix[i][j] = matrix[i-1][j-1];
+                } else {
+                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
+                                            Math.min(matrix[i][j-1] + 1, // insertion
+                                                    matrix[i-1][j] + 1)); // deletion
+                }
             }
         }
         return matrix[b.length][a.length];
@@ -196,7 +197,7 @@
         left: 0;
         right: 0;
         margin: 0 auto;
-        border: 1px solid #c7c7c7;
+        
         width: 40%;
         height: 0px;
         opacity: 0;
@@ -210,16 +211,13 @@
         cursor: pointer;
         margin: 0px;
         background-color: #fcfcfc;
+        border: 1px solid #c7c7c7;
     }
     .driver:nth-child(n) {
         flex: 1;
-        border-bottom: 1px solid #c7c7c7;
-    }
-    .driver:last-child {
-        border: none;
     }
     .driver:hover {
-        background-color: rgba(197, 202, 233, 0.41);
+        background-color: rgba(197, 202, 233, 1);
     }
     .driverContainer {
         width: 50%;

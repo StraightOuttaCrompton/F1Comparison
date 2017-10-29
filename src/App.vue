@@ -34,6 +34,7 @@ export default {
 		color: #2c3e50;
 		margin: 0px;
 		display: flex;
+		background-color: #ededed;
 	}
 
 	h1, h2 {
