@@ -1,7 +1,7 @@
 <template>
   <div class="top">
     <div class="flexCenter">
-    <div  class="title">F1 Comparison</div>
+    <div  class="title">F1 Driver Comparison</div>
 
     </div>
   </div>

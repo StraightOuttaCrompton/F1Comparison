@@ -1,10 +1,10 @@
 <template>
     <form>
         <div class="driverSearchBarContainer"> 
-            <input v-model="inputString" type="text" name="search" placeholder="Search for drivers..." autocomplete="off" autofocus>
-            <div class="results">
-                <li class="driver" v-for="driver in drivers" v-on:click="selectDriver(driver)" v-if="driver.driverIndex < 5">
-                    <div  class="driverContainer" >
+            <input v-model="inputString" @focus="driversSearchFocus" @blur="driversSearchBlur" type="text" placeholder="Search for drivers..." autocomplete="off" autofocus >
+            <div id="results" class="results">
+                <li class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
+                    <div  class="driverContainer">
                         <div class="item">Name: {{ driver.givenName }} {{ driver.familyName }}</div>
                         <div class="item">dateOfBirth: {{ driver.dateOfBirth }}</div>
                         <div class="item">nationality: {{ driver.nationality }}</div>
@@ -42,9 +42,18 @@
             }
         },
         methods: {
+            driversSearchFocus : function () {
+                document.getElementById('results').style.height = "400px";
+                document.getElementById('results').style.opacity = "1";
+            },
+            driversSearchBlur : function () {
+                setTimeout(function() {
+                    document.getElementById('results').style.height = "0px";
+                    document.getElementById('results').style.opacity = "0";
+                }, 20);
+            },
             selectDriver: function (driver) {
                 this.inputString = "";
-                console.log('selected');
                 EventBus.$emit('driver_selected', driver);
             },
             searchDrivers: function () {
@@ -55,21 +64,17 @@
             * Add indexing for longest consecutive matching string
             */
             indexDrivers: function () {
-                var self = this;
+                let self = this;
                 this.drivers.forEach(function(driver) {
-                    var inputWords = self.inputString.split(" ");
-                    var minIndex = 1000;
-                    var firstNameDistance, secondNameDistance;
-                    var driverFirstName = driver.givenName.toLowerCase();
-                    var driverSecondName = driver.familyName.toLowerCase();
-                    if (self.inputString.toLowerCase() == driverFirstName + " " + secondNameDistance) { 
-                        //driver.driverIndex = 0; 
-                        //return; 
-                    }
+                    let inputWords = self.inputString.split(" ");
+                    let minIndex = 1000;
+                    let firstNameDistance, secondNameDistance;
+                    let driverFirstName = driver.givenName.toLowerCase();
+                    let driverSecondName = driver.familyName.toLowerCase();
                     inputWords.forEach(function(input) {
                         if (input == "") return;
                         input = input.toLowerCase();
-                        var currentIndex = 1000;
+                        let currentIndex = 1000;
                         if(driverFirstName.startsWith(input)) {
                             currentIndex = 1;
                         }
@@ -82,8 +87,8 @@
                             }
                         }
                         if(driverSecondName.includes(input)) {
-                            if (currentIndex > 3) {
-                                currentIndex = 3;
+                            if (currentIndex > 2) {
+                                currentIndex = 2;
                             }
                         }
                         firstNameDistance = getEditDistance(input, driverFirstName);
@@ -101,7 +106,7 @@
             },
             sortDriversByIndex: function () {
                 this.drivers.sort(function(a, b) {
-                    var i = a.driverIndex - b.driverIndex;
+                    let i = a.driverIndex - b.driverIndex;
                     if (i == 0) {
                         if(a.familyName < b.familyName) return -1;
                         if(a.familyName > b.familyName) return 1;
@@ -113,8 +118,8 @@
 
         },
         created: function () {
-            var self = this;
-            axios.get(config.f1BaseUrl + '/drivers.json?limit=10')
+            let self = this;
+            axios.get(config.f1BaseUrl + '/drivers.json?limit=1000')
             .then(function (response) {
                 self.drivers = response.data.MRData.DriverTable.Drivers;
                 self.loaded = true;
@@ -132,7 +137,7 @@
         if (a.length === 0) return b.length; 
         if (b.length === 0) return a.length;
 
-        var matrix = [];
+        let matrix = [];
 
         // increment along the first column of each row
         var i;
@@ -179,9 +184,8 @@
         background-repeat: no-repeat;
         padding: 12px 20px 12px 40px;
         -webkit-transition: width 0.4s ease-in-out;
-        transition: width 0.4s ease-in-out;
+        transition: width 0.1s ease-in-out;
     }
-
     input[type=text]:focus {
         width: 40%;
     }
@@ -195,7 +199,7 @@
         right: 0;
         margin: 0 auto;
         width: 40%;
-        height: 400px;
+        transition: 0.1s ease-in-out;
     }
     .driver {
         display: flex;
