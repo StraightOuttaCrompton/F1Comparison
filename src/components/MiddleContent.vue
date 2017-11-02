@@ -2,8 +2,8 @@
   <div class="middleContent">
     <div class="inner">
       <div class="middleContentItem">
-        <search-bar @inputStringUpdated="val => driverInputString = val">
-          <!-- <li class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
+        <search-bar id="driverSearchbar" placeholder="Search for drivers..." @inputStringUpdated="val => driverInputString = val">
+          <li class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
             <div  class="driverContainer">
               <div class="item">Name: {{ driver.givenName }} {{ driver.familyName }}</div>
               <div class="item">dateOfBirth: {{ driver.dateOfBirth }}</div>
@@ -11,7 +11,9 @@
               <div class="item">Index: {{ driver.driverIndex }}</div>
               <a class="item" :href="driver.url" target="_blank">More Info</a>
             </div>
-          </li> -->
+          </li>
+        </search-bar>
+        <search-bar id="circuitSearchbar" placeholder="Search for circuits..." @inputStringUpdated="val => circuitInputString = val">
         </search-bar>
       </div>
       <div class="middleContentItem"><selected-drivers></selected-drivers></div>
@@ -32,11 +34,15 @@
     data () {
       return {
         driverInputString: "",
+        circuitInputString: "",
       }
     },
     watch: {
       driverInputString: function() {
         console.log(this.driverInputString);
+      },
+      circuitInputString: function() {
+        console.log(this.circuitInputString);
       }
     },
     events:{
@@ -45,14 +51,15 @@
       // }
     },
     created: function () {
-      // let self = this;
-      // axios.get(config.f1BaseUrl + '/drivers.json?limit=1000')
-      // .then(function (response) {
-      //     self.drivers = response.data.MRData.DriverTable.Drivers;
-      // })
-      // .catch(function (error) {
-      //     console.error(error);
-      // });
+      let self = this;
+      axios.get(config.f1BaseUrl + '/drivers.json?limit=1000')
+      .then(function (response) {
+          self.drivers = response.data.MRData.DriverTable.Drivers;
+          console.log(self.drivers);
+      })
+      .catch(function (error) {
+          console.error(error);
+      });
     },
     methods: {
       // selectDriver: function (driver) {

@@ -1,7 +1,7 @@
 <template>
   <div class="searchBarContainer"> 
-    <input v-model="inputString" @focus="showResults" @blur="hideResults" type="text" placeholder="Search for drivers..." autocomplete="off" autofocus >
-    <div id="results" class="results">
+    <input v-model="inputString" type="text" v-bind:placeholder="placeholder" autocomplete="off">
+    <div class="results">
       <slot></slot>
     </div>
   </div>
@@ -12,6 +12,7 @@
   import EventBus from '../eventbus.js'
   export default {
     name: 'search-bar',
+    props: ['placeholder'],
     components: {
     },
     data () {
@@ -26,17 +27,6 @@
       }
     },
     methods: {
-      showResults : function () {
-        document.getElementById('results').style.height = "400px";
-        document.getElementById('results').style.opacity = "1";
-      },
-      hideResults : function () {
-        //Timeout is so that the results are still open to be clicked
-        setTimeout(function() {
-          document.getElementById('results').style.height = "0px";
-          document.getElementById('results').style.opacity = "0";
-        }, 20);
-      },
     },
   }
 </script>
@@ -73,5 +63,13 @@
     margin: 0 auto;
     width: 40%;
     transition: 0.1s ease-in-out;
+    height: 0px;
+    opacity: 0;
+    background-color: red;
+    z-index: 10;
+  }
+  input[type=text]:focus + .results {
+    height: 400px;
+    opacity: 1;
   }
 </style>
