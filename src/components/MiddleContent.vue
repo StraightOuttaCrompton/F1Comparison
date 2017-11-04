@@ -2,7 +2,7 @@
   <div class="middleContent">
     <div class="inner">
       <div class="middleContentItem">
-        <search-bar id="driverSearchbar" placeholder="Search for drivers..." @inputStringUpdated="val => driverInputString = val">
+        <search-bar placeholder="Search for drivers..." @inputStringUpdated="val => driverInputString = val">
           <li class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
             <div  class="driverContainer">
               <div class="item">Name: {{ driver.givenName }} {{ driver.familyName }}</div>
@@ -39,10 +39,10 @@
     },
     watch: {
       driverInputString: function() {
-        console.log(this.driverInputString);
+        //(this.driverInputString);
       },
       circuitInputString: function() {
-        console.log(this.circuitInputString);
+        //console.log(this.circuitInputString);
       }
     },
     events:{
@@ -55,7 +55,6 @@
       axios.get(config.f1BaseUrl + '/drivers.json?limit=1000')
       .then(function (response) {
           self.drivers = response.data.MRData.DriverTable.Drivers;
-          console.log(self.drivers);
       })
       .catch(function (error) {
           console.error(error);
