@@ -1,11 +1,10 @@
 <template>
     <div class="searchBarContainer">
-        <input v-model="inputString" @focus="showResults" @blur="hideResults" type="text" v-bind:placeholder="placeholder" autocomplete="off">
-        <div class="results">
+        <input v-model="inputString" type="search" v-bind:placeholder="placeholder" autocomplete="off">
+        <ul class="results">
             <slot></slot>
-        </div>
+        </ul>
     </div>
-
 </template>
 
 <script>
@@ -31,6 +30,9 @@
             },
             hideResults: function () {
             },
+            selectDriver: function (driver) {
+              console.log(driver);
+            }
         }
   }
 </script>
@@ -40,7 +42,7 @@
         position: relative;
     }
 
-    input[type=text] {
+    input[type=search] {
         width: 200px;
         box-sizing: border-box;
         border: 2px solid #ccc;
@@ -55,7 +57,7 @@
         transition: width 0.1s ease-in-out;
     }
 
-    input[type=text]:focus {
+    input[type=search]:focus {
         width: 40%;
     }
 
@@ -70,7 +72,14 @@
         margin: 0 auto;
         width: 40%;
         transition: 0.1s ease-in-out;
-        background-color: red;
         z-index: 10;
+        height: 0;
+        opacity: 0;
+        background-color: red;
+    }
+
+    input[type=search]:focus + .results{
+        height: 400px;
+        opacity: 1;
     }
 </style>
