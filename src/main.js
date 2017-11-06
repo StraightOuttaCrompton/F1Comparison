@@ -9,18 +9,3 @@ new Vue({ // eslint-disable-line no-new
     el: '#app',
     render: (h) => h(App)
 });
-
-// Vue.directive('openresults', {
-//     bind(el, binding, vnode) {
-//         if (binding.value) {
-//             el.style.height = "400px";
-//             el.style.opacity = "1";
-//         } else {
-//             //Timeout is so that the results are still open to be clicked
-//             setTimeout(function () {
-//                 el.style.height = "0px";
-//                 el.style.opacity = "0";
-//             }, 20);
-//         }
-//     }
-// })

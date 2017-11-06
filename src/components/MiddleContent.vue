@@ -1,25 +1,25 @@
 <template>
     <div class="middleContent">
         <div class="inner">
-
+            <!-- 
             <div class="middleContentItem">
-                <input v-model="inputString" type="search" v-bind:placeholder="placeholder" autocomplete="off">
-                <ul class="results">
-                    <li v-for="driver in drivers">
-                        <a href="javascript:void(0);" onclick="alert('hello');">{{driver.givenName}}</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- <div class="middleContentItem">
-                <search-bar placeholder="Search for drivers..." @inputStringUpdated="val => driverInputString = val">
-                    <li class="driver" v-for="driver in drivers">
-                        <div  @click="selectDriver(driver)">{{driver.givenName}}</div>
+                <div>
+                    <input v-model="inputString" type="search" v-bind:placeholder="placeholder" autocomplete="off">
+                    <ul class="results">
+                        <li v-for="driver in drivers">
+                            <a href="javascript:void(0);" v-on:click="selectDriver(driver);">{{driver.givenName}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div> -->
+            <div class="middleContentItem">
+                <search-bar placeholder="Search for drivers..." :input-string="driverInputString" @inputStringUpdated="val => driverInputString = val">
+                    <li class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
+                        <div>{{driver.givenName}}</div>
                     </li>
                 </search-bar>
 
-                <search-bar id="circuitSearchbar" placeholder="Search for circuits..." @inputStringUpdated="val => circuitInputString = val">
-                </search-bar>
-            </div> -->
+            </div>
             <div class="middleContentItem">
                 <selected-drivers></selected-drivers>
             </div>
@@ -46,7 +46,7 @@
         },
         watch: {
             driverInputString: function () {
-                //(this.driverInputString);
+                console.log(this.driverInputString);
             },
             circuitInputString: function () {
                 //console.log(this.circuitInputString);
@@ -70,9 +70,9 @@
         },
         methods: {
             selectDriver: function (driver) {
-              this.inputString = "";
-              console.log(driver);
-              //EventBus.$emit('driver_selected', driver);
+                this.driverInputString = "";
+                console.log(driver);
+                //EventBus.$emit('driver_selected', driver);
             }
             // searchDrivers: function () {
             //   this.indexDrivers();
@@ -134,75 +134,6 @@
 </script>
 
 <style scoped>
-
-
-    .searchBarContainer {
-        position: relative;
-    }
-
-    input[type=search] {
-        width: 200px;
-        box-sizing: border-box;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-        background-color: white;
-        background-image: url('../../images/searchicon.png');
-        background-position: 10px 10px;
-        background-repeat: no-repeat;
-        padding: 12px 20px 12px 40px;
-        -webkit-transition: width 0.4s ease-in-out;
-        transition: width 0.1s ease-in-out;
-    }
-
-    input[type=search]:focus {
-        width: 40%;
-    }
-    input[type="search"]::-webkit-input-placeholder{
-    color:#b1e0de;
-    }
-    input[type="search"]:-moz-placeholder { /* Firefox 18- */
-        color: #b1e0de;
-    }
-    input[type="search"]::-moz-placeholder {  /* Firefox 19+ */
-        color: #b1e0de;
-    }
-    input[type="search"]:-ms-input-placeholder {  /* interner explorer*/
-        color: #b1e0de;
-    }
-
-    .results {
-        display: flex;
-        flex-wrap: wrap;
-        position: absolute;
-        top: 50px;
-        overflow: auto;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
-        width: 40%;
-        transition: 0.1s ease-in-out;
-        z-index: 10;
-        background-color: red;
-    }
-    .results li{
-        overflow:hidden;
-        height:0;
-        -webkit-transition:all 0.3s ease-in-out;
-        -moz-transition:all 0.3s ease-in-out;
-        -o-transition:all 0.3s ease-in-out;
-        transition:all 0.3s ease-in-out;
-    }
-
-    input[type="search"]:focus + .results li{
-        height:63px;
-    }
-
-
-
-
-
-
     .middleContent {
         display: flex;
         justify-content: center;
@@ -231,10 +162,7 @@
         margin: 0px;
         background-color: #fcfcfc;
         border: 1px solid #c7c7c7;
-    }
-
-    .driver:nth-child(n) {
-        flex: 1;
+        padding: 10px;
     }
 
     .driver:hover {

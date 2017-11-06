@@ -1,7 +1,7 @@
 <template>
     <div class="searchBarContainer">
-        <input v-model="inputString" type="search" v-bind:placeholder="placeholder" autocomplete="off">
-        <ul class="results">
+        <input v-model="input" type="search" v-bind:placeholder="placeholder" autocomplete="off">
+        <ul v-if="input != ''" class="results">
             <slot></slot>
         </ul>
     </div>
@@ -13,28 +13,33 @@
     let self = this;
     export default {
         name: 'search-bar',
-        props: ['placeholder'],
+        props: ['placeholder', 'inputString'],
         components: {},
         data() {
             return {
-                inputString: '',
+                input: this.$props.inputString,
             }
         },
         watch: {
+            input: function () {
+                console.log(this.input);
+                this.$emit('inputStringUpdated', this.input)
+            },
             inputString: function () {
-                this.$emit('inputStringUpdated', this.inputString)
+                if (this.$props.inputString == "") {
+                    console.log('yoooo');
+                    this.input = "";
+                }
             }
         },
         methods: {
-            showResults: function () {
-            },
-            hideResults: function () {
-            },
+            showResults: function () {},
+            hideResults: function () {},
             selectDriver: function (driver) {
-              console.log(driver);
+                console.log(driver);
             }
         }
-  }
+    }
 </script>
 
 <style scoped>
@@ -53,8 +58,6 @@
         background-position: 10px 10px;
         background-repeat: no-repeat;
         padding: 12px 20px 12px 40px;
-        -webkit-transition: width 0.4s ease-in-out;
-        transition: width 0.1s ease-in-out;
     }
 
     input[type=search]:focus {
@@ -73,13 +76,7 @@
         width: 40%;
         transition: 0.1s ease-in-out;
         z-index: 10;
-        height: 0;
-        opacity: 0;
-        background-color: red;
-    }
-
-    input[type=search]:focus + .results{
         height: 400px;
-        opacity: 1;
+        background-color: red;
     }
 </style>
