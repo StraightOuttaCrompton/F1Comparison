@@ -57,11 +57,5 @@ export default {
     a {
         color: #42b983;
     }
-
-    .fill {
-        min-width: 100%;
-        min-height: 100%;
-    }
-
 </style>
 <style scoped></style>

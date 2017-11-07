@@ -1,27 +1,15 @@
 <template>
     <div class="middleContent">
         <div class="inner">
-            <!-- 
             <div class="middleContentItem">
-                <div>
-                    <input v-model="inputString" type="search" v-bind:placeholder="placeholder" autocomplete="off">
-                    <ul class="results">
-                        <li v-for="driver in drivers">
-                            <a href="javascript:void(0);" v-on:click="selectDriver(driver);">{{driver.givenName}}</a>
-                        </li>
-                    </ul>
-                </div>
-            </div> -->
-            <div class="middleContentItem">
-                <search-bar id="DriverSearchBar" placeholder="Search for drivers..." :input-string="driverInputString" @inputStringUpdated="val => driverInputString = val">
-                    <li class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
+                <search-bar id="DriverSearchBar" placeholder="Search for drivers..." :input-string="driverInputString" :resultsarray="drivers" @inputStringUpdated="val => driverInputString = val">
+                    <li slot="results" class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
                         <div>{{driver.givenName}} {{driver.familyName}}</div>
                     </li>
                 </search-bar>
-
             </div>
             <div class="middleContentItem">
-                <selected-drivers></selected-drivers>
+                <selected-drivers :drivers="selectedDrivers"></selected-drivers>
             </div>
         </div>
     </div>
@@ -41,7 +29,8 @@
             return {
                 driverInputString: "",
                 circuitInputString: "",
-                drivers: []
+                drivers: [],
+                selectedDrivers: []
             }
         },
         watch: {
@@ -57,7 +46,6 @@
             axios.get(config.f1BaseUrl + '/drivers.json?limit=1000')
                 .then(function (response) {
                     self.drivers = response.data.MRData.DriverTable.Drivers;
-                    console.log(self.drivers);
                 })
                 .catch(function (error) {
                     console.error(error);
@@ -66,8 +54,8 @@
         methods: {
             selectDriver: function (driver) {
                 this.driverInputString = "";
+                this.selectedDrivers.push(driver);
                 console.log(driver);
-                //EventBus.$emit('driver_selected', driver);
             },
             searchDrivers: function () {
               this.indexDrivers();
@@ -77,9 +65,7 @@
             * Add indexing for longest consecutive matching string
             */
             indexDrivers: function () {
-
                 let self = this;
-                console.log(self.driverInputString);
                 this.drivers.forEach(function (driver) {
                     let inputWords = self.driverInputString.split(" ");
                     let minIndex = 1000;
@@ -188,7 +174,6 @@
         min-width: 275px;
         cursor: pointer;
         margin: 0px;
-        background-color: #fcfcfc;
         border: 1px solid #c7c7c7;
         padding: 10px;
     }

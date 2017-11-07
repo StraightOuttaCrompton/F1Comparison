@@ -2,21 +2,30 @@
     <div class="searchBarContainer">
         <input v-model="input" type="search" v-bind:id="id" v-bind:placeholder="placeholder" autocomplete="off">
         <ul v-if="input != ''" class="results">
-            <slot></slot>
+            <loader v-if="!resultsarray || resultsarray.length == 0"></loader>
+            <slot name="results"></slot>
         </ul>
     </div>
 </template>
 
 <script>
-    import EventBus from '../eventbus.js'
+    import Loader from './Loader.vue'
     let resultsElement = null;
     export default {
         name: 'search-bar',
-        props: ['placeholder','id', 'inputString'],
-        components: {},
+        props: ['placeholder','id', 'inputString', 'resultsarray'],
+        components: {
+            'loader': Loader
+        },
         data() {
             return {
                 input: this.$props.inputString,
+            }
+        },
+        methods: {
+            showLoader: function () {
+                console.log(this.resultsArray);
+                return true;
             }
         },
         watch: {
@@ -27,6 +36,10 @@
                 if (this.$props.inputString == "") {
                     this.input = "";
                 }
+                console.log(this.resultsarray);
+            },
+            resultsarray: function () {
+                console.log(this.resultsarray);
             }
         }
     }
@@ -67,8 +80,8 @@
         transition: 0.1s ease-in-out;
         z-index: 10;
         height: 400px;
-            opacity: 0;
-        background-color: red;
+        opacity: 0;
+        background-color: #fcfcfc;
     }
 
     input[type=search]:focus + .results {

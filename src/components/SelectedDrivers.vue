@@ -12,25 +12,9 @@
 </template>
 
 <script>
-    import EventBus from '../eventbus.js'
     export default {
         name: 'selected-drivers',
-        data() {
-            return {
-                drivers: []
-            }
-        },
-        mounted: function () {
-            var self = this;
-            EventBus.$on('driver_selected', function (driver) {
-                self.addDriver(driver);
-            })
-        },
-        methods: {
-            addDriver: function (driver) {
-                this.drivers.push(driver);
-            }
-        }
+        props: ['drivers']
     }
 </script>
 
