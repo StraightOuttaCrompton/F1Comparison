@@ -1,6 +1,6 @@
 <template>
     <div class="searchBarContainer">
-        <input v-model="input" type="search" v-bind:placeholder="placeholder" autocomplete="off">
+        <input v-model="input" type="search" v-bind:id="id" v-bind:placeholder="placeholder" autocomplete="off">
         <ul v-if="input != ''" class="results">
             <slot></slot>
         </ul>
@@ -10,10 +10,9 @@
 <script>
     import EventBus from '../eventbus.js'
     let resultsElement = null;
-    let self = this;
     export default {
         name: 'search-bar',
-        props: ['placeholder', 'inputString'],
+        props: ['placeholder','id', 'inputString'],
         components: {},
         data() {
             return {
@@ -22,21 +21,12 @@
         },
         watch: {
             input: function () {
-                console.log(this.input);
                 this.$emit('inputStringUpdated', this.input)
             },
             inputString: function () {
                 if (this.$props.inputString == "") {
-                    console.log('yoooo');
                     this.input = "";
                 }
-            }
-        },
-        methods: {
-            showResults: function () {},
-            hideResults: function () {},
-            selectDriver: function (driver) {
-                console.log(driver);
             }
         }
     }
@@ -77,6 +67,11 @@
         transition: 0.1s ease-in-out;
         z-index: 10;
         height: 400px;
+            opacity: 0;
         background-color: red;
+    }
+
+    input[type=search]:focus + .results {
+        opacity: 1;
     }
 </style>

@@ -13,7 +13,7 @@
                 </div>
             </div> -->
             <div class="middleContentItem">
-                <search-bar placeholder="Search for drivers..." :input-string="driverInputString" @inputStringUpdated="val => driverInputString = val">
+                <search-bar id="DriverSearchBar" placeholder="Search for drivers..." :input-string="driverInputString" @inputStringUpdated="val => driverInputString = val">
                     <li class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
                         <div>{{driver.givenName}}</div>
                     </li>
@@ -46,16 +46,11 @@
         },
         watch: {
             driverInputString: function () {
-                console.log(this.driverInputString);
+                this.indexDrivers();
             },
             circuitInputString: function () {
                 //console.log(this.circuitInputString);
             }
-        },
-        events: {
-            // 'driver_selected' : function(driver){
-            //   this.$broadcast('driver_selected', driver);
-            // }
         },
         created: function () {
             let self = this;
@@ -73,64 +68,97 @@
                 this.driverInputString = "";
                 console.log(driver);
                 //EventBus.$emit('driver_selected', driver);
-            }
-            // searchDrivers: function () {
-            //   this.indexDrivers();
-            //   this.sortDriversByIndex();
-            // },
-            // /* TODO
-            // * Add indexing for longest consecutive matching string
-            // */
-            // indexDrivers: function () {
-            //   let self = this;
-            //   this.drivers.forEach(function(driver) {
-            //     let inputWords = self.inputString.split(" ");
-            //     let minIndex = 1000;
-            //     let firstNameDistance, secondNameDistance;
-            //     let driverFirstName = driver.givenName.toLowerCase();
-            //     let driverSecondName = driver.familyName.toLowerCase();
-            //     inputWords.forEach(function(input) {
-            //       if (input == "") return;
-            //       input = input.toLowerCase();
-            //       let currentIndex = 1000;
-            //       if(driverFirstName.startsWith(input)) currentIndex = 1;
-            //       if(driverSecondName.startsWith(input)) currentIndex = 1;
-            //       if(driverFirstName.includes(input)) {
-            //         if (currentIndex > 2) {
-            //           currentIndex = 2;
-            //         }
-            //       }
-            //       if(driverSecondName.includes(input)) {
-            //         if (currentIndex > 2) {
-            //           currentIndex = 2;
-            //         }
-            //       }
+            },
+            searchDrivers: function () {
+              this.indexDrivers();
+              this.sortDriversByIndex();
+            },
+            /* TODO
+            * Add indexing for longest consecutive matching string
+            */
+            indexDrivers: function () {
+                console.log(this.driverInputString);
 
-            //       firstNameDistance = getEditDistance(input, driverFirstName);
-            //       secondNameDistance = getEditDistance(input, driverSecondName);
-            //       if (firstNameDistance < currentIndex || secondNameDistance < currentIndex) {
-            //         currentIndex = Math.min(firstNameDistance, secondNameDistance);
-            //       }
-            //       if (currentIndex < minIndex) {
-            //         minIndex = currentIndex;
-            //       }
-            //     });
-            //     driver.driverIndex = minIndex;
-            //   });
-            // },
-            // sortDriversByIndex: function () {
-            //   this.drivers.sort(function(a, b) {
-            //     let i = a.driverIndex - b.driverIndex;
-            //     if (i == 0) {
-            //       if(a.familyName < b.familyName) return -1;
-            //       if(a.familyName > b.familyName) return 1;
-            //       return 0;
-            //     }
-            //     return i;
-            //   });
-            // }
+                let self = this;
+                this.drivers.forEach(function (driver) {
+                    let inputWords = self.driverInputString.split(" ");
+                    let minIndex = 1000;
+                    let firstNameDistance, secondNameDistance;
+                    let driverFirstName = driver.givenName.toLowerCase();
+                    let driverSecondName = driver.familyName.toLowerCase();
+                    inputWords.forEach(function (input) {
+                        if (input == "") return;
+                        input = input.toLowerCase();
+                        let currentIndex = 1000;
+                        if (driverFirstName.startsWith(input)) currentIndex = 1;
+                        if (driverSecondName.startsWith(input)) currentIndex = 1;
+                        if (driverFirstName.includes(input)) {
+                            if (currentIndex > 2) {
+                                currentIndex = 2;
+                            }
+                        }
+                        if (driverSecondName.includes(input)) {
+                            if (currentIndex > 2) {
+                                currentIndex = 2;
+                            }
+                        }
+
+                        firstNameDistance = getEditDistance(input, driverFirstName);
+                        secondNameDistance = getEditDistance(input, driverSecondName);
+                        if (firstNameDistance < currentIndex || secondNameDistance < currentIndex) {
+                            currentIndex = Math.min(firstNameDistance, secondNameDistance);
+                        }
+                        if (currentIndex < minIndex) {
+                            minIndex = currentIndex;
+                        }
+                    });
+                    driver.driverIndex = minIndex;
+                });
+            },
+            sortDriversByIndex: function () {
+                this.drivers.sort(function (a, b) {
+                    let i = a.driverIndex - b.driverIndex;
+                    if (i == 0) {
+                        if (a.familyName < b.familyName) return -1;
+                        if (a.familyName > b.familyName) return 1;
+                        return 0;
+                    }
+                    return i;
+                });
+            }
         }
     }
+    // Compute the edit distance between the two given strings
+    function getEditDistance(a, b) {
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+        if (a.length === 0) return b.length; 
+        if (b.length === 0) return a.length;
+        var matrix = [];
+        // increment along the first column of each row
+        var i;
+        for (i = 0; i <= b.length; i++) {
+            matrix[i] = [i];
+        }
+        // increment each column in the first row
+        var j;
+        for (j = 0; j <= a.length; j++) {
+            matrix[0][j] = j;
+        }
+        // Fill in the rest of the matrix
+        for (i = 1; i <= b.length; i++) {
+            for (j = 1; j <= a.length; j++) {
+                if (b.charAt(i-1) == a.charAt(j-1)) {
+                    matrix[i][j] = matrix[i-1][j-1];
+                } else {
+                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
+                                            Math.min(matrix[i][j-1] + 1, // insertion
+                                                    matrix[i-1][j] + 1)); // deletion
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    };
 </script>
 
 <style scoped>
