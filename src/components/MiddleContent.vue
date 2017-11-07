@@ -15,7 +15,7 @@
             <div class="middleContentItem">
                 <search-bar id="DriverSearchBar" placeholder="Search for drivers..." :input-string="driverInputString" @inputStringUpdated="val => driverInputString = val">
                     <li class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
-                        <div>{{driver.givenName}}</div>
+                        <div>{{driver.givenName}} {{driver.familyName}}</div>
                     </li>
                 </search-bar>
 
@@ -46,7 +46,7 @@
         },
         watch: {
             driverInputString: function () {
-                this.indexDrivers();
+                this.searchDrivers();
             },
             circuitInputString: function () {
                 //console.log(this.circuitInputString);
@@ -77,9 +77,9 @@
             * Add indexing for longest consecutive matching string
             */
             indexDrivers: function () {
-                console.log(this.driverInputString);
 
                 let self = this;
+                console.log(self.driverInputString);
                 this.drivers.forEach(function (driver) {
                     let inputWords = self.driverInputString.split(" ");
                     let minIndex = 1000;
