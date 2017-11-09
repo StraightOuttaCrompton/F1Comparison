@@ -22,12 +22,6 @@
                 input: this.$props.inputString,
             }
         },
-        methods: {
-            showLoader: function () {
-                console.log(this.resultsArray);
-                return true;
-            }
-        },
         watch: {
             input: function () {
                 this.$emit('inputStringUpdated', this.input)
@@ -36,11 +30,7 @@
                 if (this.$props.inputString == "") {
                     this.input = "";
                 }
-                console.log(this.resultsarray);
             },
-            resultsarray: function () {
-                console.log(this.resultsarray);
-            }
         }
     }
 </script>
