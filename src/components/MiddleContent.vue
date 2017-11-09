@@ -58,48 +58,48 @@
                 console.log(driver);
             },
             searchDrivers: function () {
-              this.indexDrivers();
-              this.sortDriversByIndex();
+                this.indexDrivers();
+                this.sortDriversByIndex();
             },
             /* TODO
-            * Add indexing for longest consecutive matching string
-            */
+             * Add indexing for longest consecutive matching string
+             */
             indexDrivers: function () {
                 let self = this;
+                let inputWords = self.driverInputString.split(" ");
                 this.drivers.forEach(function (driver) {
-                    let inputWords = self.driverInputString.split(" ");
-                    let minIndex = 1000;
                     let firstNameDistance, secondNameDistance;
                     let driverFirstName = driver.givenName.toLowerCase();
                     let driverSecondName = driver.familyName.toLowerCase();
-                    inputWords.forEach(function (input) {
-                        if (input == "") return;
-                        input = input.toLowerCase();
-                        let currentIndex = 1000;
-                        if (driverFirstName.startsWith(input)) currentIndex = 1;
-                        if (driverSecondName.startsWith(input)) currentIndex = 1;
-                        if (driverFirstName.includes(input)) {
-                            if (currentIndex > 2) {
-                                currentIndex = 2;
-                            }
-                        }
-                        if (driverSecondName.includes(input)) {
-                            if (currentIndex > 2) {
-                                currentIndex = 2;
-                            }
-                        }
+                    driver.driverIndex = self.getIndex(inputWords, [driverFirstName, driverSecondName]);;
+                });
+            },
+            getIndex: function (inputWords, comparisonWords) {
+                let minIndex = 1000;
+                inputWords.forEach(function (inputWord) {
+                    if (inputWord == "") return;
+                    inputWord = inputWord.toLowerCase();
+                    let currentIndex = 1000;
 
-                        firstNameDistance = getEditDistance(input, driverFirstName);
-                        secondNameDistance = getEditDistance(input, driverSecondName);
-                        if (firstNameDistance < currentIndex || secondNameDistance < currentIndex) {
-                            currentIndex = Math.min(firstNameDistance, secondNameDistance);
+                    comparisonWords.forEach(function (comparisonWord) {
+                        comparisonWord = comparisonWord.toLowerCase();
+
+                        if (comparisonWord.startsWith(inputWord)) currentIndex = 1;
+                        if (comparisonWord.includes(inputWord)) {
+                            if (currentIndex > 2) {
+                                currentIndex = 2;
+                            }
+                        }
+                        let inputWordDistance = getEditDistance(inputWord, comparisonWord);
+                        if (inputWordDistance < currentIndex) {
+                            currentIndex = inputWordDistance;
                         }
                         if (currentIndex < minIndex) {
                             minIndex = currentIndex;
                         }
                     });
-                    driver.driverIndex = minIndex;
                 });
+                return minIndex;
             },
             sortDriversByIndex: function () {
                 this.drivers.sort(function (a, b) {
@@ -118,7 +118,7 @@
     function getEditDistance(a, b) {
         a = a.toLowerCase();
         b = b.toLowerCase();
-        if (a.length === 0) return b.length; 
+        if (a.length === 0) return b.length;
         if (b.length === 0) return a.length;
         var matrix = [];
         // increment along the first column of each row
@@ -134,12 +134,12 @@
         // Fill in the rest of the matrix
         for (i = 1; i <= b.length; i++) {
             for (j = 1; j <= a.length; j++) {
-                if (b.charAt(i-1) == a.charAt(j-1)) {
-                    matrix[i][j] = matrix[i-1][j-1];
+                if (b.charAt(i - 1) == a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
                 } else {
-                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
-                                            Math.min(matrix[i][j-1] + 1, // insertion
-                                                    matrix[i-1][j] + 1)); // deletion
+                    matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, // substitution
+                        Math.min(matrix[i][j - 1] + 1, // insertion
+                            matrix[i - 1][j] + 1)); // deletion
                 }
             }
         }
