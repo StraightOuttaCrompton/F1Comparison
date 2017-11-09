@@ -14,9 +14,9 @@
                         <div>{{circuit.circuitName}}</div>
                     </li>
                 </search-bar>
-                <search-bar id="CircuitSearchBar" placeholder="Search for circuits..." :input-string="circuitInputString" :resultsarray="circuits" @inputStringUpdated="val => circuitInputString = val">
-                    <li slot="results" class="driver" v-for="circuit in circuits">
-                        <div>{{circuit.circuitName}}</div>
+                <search-bar id="TeamSearchBar" placeholder="Search for teams..." :input-string="teamInputString" :resultsarray="teams" @inputStringUpdated="val => teamInputString = val">
+                    <li slot="results" class="driver" v-for="team in teams">
+                        <div>{{team}}</div>
                     </li>
                 </search-bar>
             </div>
@@ -40,11 +40,14 @@
         data() {
             return {
                 driverInputString: "",
-                circuitInputString: "",
                 drivers: [],
                 selectedDrivers: [],
+                circuitInputString: "",
                 circuits: [],
-                selectedcircuits: []
+                selectedCircuits: [],
+                teamInputString: "",
+                teams: [],
+                selectedTeams: []
             }
         },
         watch: {
@@ -52,7 +55,10 @@
                 this.searchDrivers();
             },
             circuitInputString: function () {
-                console.log(this.circuitInputString);
+                this.searchCircuits();
+            },
+            teamInputString: function () {
+                console.log(this.teamInputString);
             }
         },
         created: function () {
@@ -82,19 +88,52 @@
                 this.indexDrivers();
                 this.sortDriversByIndex();
             },
-            /* TODO
-             * Add indexing for longest consecutive matching string
-             */
+            searchCircuits: function () {
+                this.indexCircuits();
+                this.sortCircuitsByIndex();
+            },
             indexDrivers: function () {
                 let self = this;
                 let inputWords = self.driverInputString.split(" ");
                 this.drivers.forEach(function (driver) {
-                    let firstNameDistance, secondNameDistance;
                     let driverFirstName = driver.givenName.toLowerCase();
                     let driverSecondName = driver.familyName.toLowerCase();
                     driver.driverIndex = self.getIndex(inputWords, [driverFirstName, driverSecondName]);;
                 });
             },
+            indexCircuits: function () {
+                let self = this;
+                let inputWords = self.circuitInputString.split(" ");
+                this.circuits.forEach(function (circuit) {
+                    console.log(circuit.circuitName);
+                    circuit.circuitIndex = self.getIndex(inputWords, circuit.circuitName.split(" "));;
+                });
+            },
+            sortDriversByIndex: function () {
+                this.drivers.sort(function (a, b) {
+                    let i = a.driverIndex - b.driverIndex;
+                    if (i == 0) {
+                        if (a.familyName < b.familyName) return -1;
+                        if (a.familyName > b.familyName) return 1;
+                        return 0;
+                    }
+                    return i;
+                });
+            },
+            sortCircuitsByIndex: function () {
+                this.circuits.sort(function (a, b) {
+                    let i = a.circuitIndex - b.circuitIndex;
+                    if (i == 0) {
+                        if (a.circuitName < b.circuitName) return -1;
+                        if (a.circuitName > b.circuitName) return 1;
+                        return 0;
+                    }
+                    return i;
+                });
+            },
+            /* TODO
+             * Add indexing for longest consecutive matching string
+             */
             getIndex: function (inputWords, comparisonWords) {
                 let minIndex = 1000;
                 inputWords.forEach(function (inputWord) {
@@ -121,17 +160,6 @@
                     });
                 });
                 return minIndex;
-            },
-            sortDriversByIndex: function () {
-                this.drivers.sort(function (a, b) {
-                    let i = a.driverIndex - b.driverIndex;
-                    if (i == 0) {
-                        if (a.familyName < b.familyName) return -1;
-                        if (a.familyName > b.familyName) return 1;
-                        return 0;
-                    }
-                    return i;
-                });
             }
         }
     }
