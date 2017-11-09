@@ -78,13 +78,14 @@
         margin: 0 auto;
         width: 40%;
         transition: 0.1s ease-in-out;
-        z-index: 10;
+        z-index: 0;
         height: 400px;
         opacity: 0;
         background-color: #fcfcfc;
     }
 
     input[type=search]:focus + .results {
+        z-index: 100;
         opacity: 1;
     }
 </style>

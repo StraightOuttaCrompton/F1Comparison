@@ -9,6 +9,18 @@
                 </search-bar>
             </div>
             <div class="middleContentItem">
+                <search-bar id="CircuitSearchBar" placeholder="Search for circuits..." :input-string="circuitInputString" :resultsarray="circuits" @inputStringUpdated="val => circuitInputString = val">
+                    <li slot="results" class="driver" v-for="circuit in circuits">
+                        <div>{{circuit.circuitName}}</div>
+                    </li>
+                </search-bar>
+                <search-bar id="CircuitSearchBar" placeholder="Search for circuits..." :input-string="circuitInputString" :resultsarray="circuits" @inputStringUpdated="val => circuitInputString = val">
+                    <li slot="results" class="driver" v-for="circuit in circuits">
+                        <div>{{circuit.circuitName}}</div>
+                    </li>
+                </search-bar>
+            </div>
+            <div class="middleContentItem">
                 <selected-drivers :drivers="selectedDrivers"></selected-drivers>
             </div>
         </div>
@@ -30,7 +42,9 @@
                 driverInputString: "",
                 circuitInputString: "",
                 drivers: [],
-                selectedDrivers: []
+                selectedDrivers: [],
+                circuits: [],
+                selectedcircuits: []
             }
         },
         watch: {
@@ -38,7 +52,7 @@
                 this.searchDrivers();
             },
             circuitInputString: function () {
-                //console.log(this.circuitInputString);
+                console.log(this.circuitInputString);
             }
         },
         created: function () {
@@ -46,6 +60,13 @@
             axios.get(config.f1BaseUrl + '/drivers.json?limit=1000')
                 .then(function (response) {
                     self.drivers = response.data.MRData.DriverTable.Drivers;
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+            axios.get(config.f1BaseUrl + '/circuits.json?limit=1000')
+                .then(function (response) {
+                    self.circuits = response.data.MRData.CircuitTable.Circuits;
                 })
                 .catch(function (error) {
                     console.error(error);
@@ -163,7 +184,7 @@
         background-color: #ffffff;
     }
 
-    .middleContentItem:nth-child(n) {
+    .middleContentItem {
         margin-top: 25px;
     }
 
