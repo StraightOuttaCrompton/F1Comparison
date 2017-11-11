@@ -7,8 +7,6 @@
                         <div>{{driver.givenName}} {{driver.familyName}}</div>
                     </li>
                 </search-bar>
-            </div>
-            <div class="middleContentItem">
                 <search-bar id="CircuitSearchBar" placeholder="Search for circuits..." :input-string="circuitInputString" :resultsarray="circuits" @inputStringUpdated="val => circuitInputString = val">
                     <li slot="results" class="driver" v-for="circuit in circuits">
                         <div>{{circuit.circuitName}}</div>
@@ -214,6 +212,7 @@
 
     .middleContentItem {
         margin-top: 25px;
+        display: flex;
     }
 
     .driver {

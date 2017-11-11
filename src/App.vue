@@ -57,5 +57,9 @@ export default {
     a {
         color: #42b983;
     }
+
+    input {
+        z-index: 50;
+    }
 </style>
 <style scoped></style>
