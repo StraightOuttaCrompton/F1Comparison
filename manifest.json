@@ -1,0 +1,24 @@
+{
+    "short_name": "F1Comparrison",
+    "name": "F1 Comparrison",
+    "icons": [{
+            "src": "/images/monaco.png",
+            "type": "image/png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "/images/monaco.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "/images/monaco.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ],
+    "start_url": "index.html?launcher=true",
+    "background_color": "#2196F3",
+    "theme_color": "#2196F3",
+    "display": "standalone"
+}

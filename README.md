@@ -22,3 +22,5 @@ npm test
 ```
 
 For more information see the [docs for vueify](https://github.com/vuejs/vueify).
+
+https://thenounproject.com/term/f1/1106902/
