@@ -211,6 +211,9 @@
     .middleContentItem {
         margin-top: 25px;
         display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .driver {
