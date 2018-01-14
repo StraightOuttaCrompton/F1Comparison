@@ -1,9 +1,6 @@
 <template>
-    <div class="top">
-        <div class="flexCenter">
-            <div class="title">F1 Driver Comparison</div>
-
-        </div>
+    <div class="top flex center primary">
+        <div class="title">F1 Driver Comparison</div>
     </div>
 </template>
 
@@ -15,22 +12,8 @@
 
 <style scoped>
     .top {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
         width: 100%;
-        background-color: #3F51B5;
         height: 60px;
         border-bottom: 2px solid #c9c9c9;
-    }
-
-    .flex {
-        display: flex;
-        justify-content: center;
-    }
-
-    .title {
-        color: white;
-        text-align: center;
     }
 </style>

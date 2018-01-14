@@ -14,6 +14,5 @@
     color: #999;
     font-size: 10px;
     padding: 10px;
-    margin-top: 50px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-    <div class="middleContent">
-        <div class="inner">
+    <div class="middleContent flex column center">
+        <div class="inner flex column">
             <div class="middleContentItem">
                 <search-bar id="DriverSearchBar" placeholder="Search for drivers..." :input-string="driverInputString" :resultsarray="drivers" @inputStringUpdated="val => driverInputString = val">
                     <li slot="results" class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
@@ -196,14 +196,12 @@
 
 <style scoped>
     .middleContent {
-        display: flex;
-        justify-content: center;
         flex: 1;
     }
 
     .inner {
-        display: flex;
-        flex-direction: column;
+        flex: 1;
+        align-items: center;
         max-width: 1200px;
         width: 100%;
         border: 1px solid #f1f1f1;

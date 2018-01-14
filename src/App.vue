@@ -1,7 +1,7 @@
 <template>
     <div class="Site flex column">
         <top></top>
-        <middleContent class="Site-content"></middleContent>
+        <middleContent></middleContent>
         <bottom></bottom>
     </div>
 </template>
@@ -21,12 +21,19 @@ export default {
     }
 </script>
 <style>
+    .primary {
+        background-color: #3F51B5;
+        color: #ffffff;
+    }
     .flex {
       display: flex;
     }
-
     .flex.column {
       flex-direction: column;
+    }
+    .flex.center {
+        justify-content: center;
+        align-items: center;
     }
     .Site {
         min-height: 100vh;
