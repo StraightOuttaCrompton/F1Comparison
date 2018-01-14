@@ -1,8 +1,8 @@
 {
-  "name": "f1-comparison",
+  "name": "f1comparison2",
   "version": "0.1.0",
   "description": "A Vue.js project",
-  "author": "StraightOuttaCrompton <jack.crompton@btinternet.com>",
+  "author": "",
   "private": true,
   "scripts": {
     "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
@@ -20,7 +20,7 @@
     "vue": "vue/dist/vue.common.js"
   },
   "dependencies": {
-    "axios": "^0.17.0",
+    "axios": "^0.17.1",
     "vue": "^2.0.1"
   },
   "devDependencies": {

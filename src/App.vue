@@ -1,5 +1,5 @@
 <template>
-    <div class="Site">
+    <div class="Site flex column">
         <top></top>
         <middleContent class="Site-content"></middleContent>
         <bottom></bottom>
@@ -21,15 +21,18 @@ export default {
     }
 </script>
 <style>
-    #app {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        flex: 1;
+    .flex {
+      display: flex;
+    }
+
+    .flex.column {
+      flex-direction: column;
+    }
+    .Site {
+        min-height: 100vh;
     }
     body,
     html {
-        width: 100%;
         min-height: 100vh;
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -37,7 +40,6 @@ export default {
         text-align: center;
         color: #2c3e50;
         margin: 0px;
-        display: flex;
         background-color: #ededed;
     }
     h1,
@@ -56,4 +58,6 @@ export default {
         color: #42b983;
     }
 </style>
-<style scoped></style>
+
+<style scoped>
+</style>
