@@ -1,10 +1,12 @@
 <template>
     <div class="searchBarContainer">
         <input v-model="input" type="search" v-bind:id="id" v-bind:placeholder="placeholder" autocomplete="off">
-        <ul v-if="input != ''" class="results">
+        <div v-if="input != ''" class="results">
             <loader v-if="!resultsarray || resultsarray.length == 0"></loader>
-            <slot name="results"></slot>
-        </ul>
+            <div class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
+                <div>{{driver.givenName}} {{driver.familyName}}</div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -77,5 +79,26 @@
     input[type=search]:focus + .results {
         z-index: 100;
         opacity: 1;
+    }
+    
+    .driver {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        min-width: 275px;
+        cursor: pointer;
+        margin: 0px;
+        border: 1px solid #c7c7c7;
+        padding: 10px;
+    }
+
+    .driver:hover {
+        background-color: rgba(197, 202, 233, 1);
+    }
+
+    .driverContainer {
+        width: 50%;
+        text-align: start;
+        padding: 25px 15px;
     }
 </style>

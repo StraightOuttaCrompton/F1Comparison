@@ -3,11 +3,9 @@
         <div class="inner flex column">
             <div class="middleContentItem">
                 <search-bar id="DriverSearchBar" placeholder="Search for drivers..." :input-string="driverInputString" :resultsarray="drivers" @inputStringUpdated="val => driverInputString = val">
-                    <li slot="results" class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
-                        <div>{{driver.givenName}} {{driver.familyName}}</div>
-                    </li>
+
                 </search-bar>
-                <search-bar id="CircuitSearchBar" placeholder="Search for circuits..." :input-string="circuitInputString" :resultsarray="circuits" @inputStringUpdated="val => circuitInputString = val">
+                <!-- <search-bar id="CircuitSearchBar" placeholder="Search for circuits..." :input-string="circuitInputString" :resultsarray="circuits" @inputStringUpdated="val => circuitInputString = val">
                     <li slot="results" class="driver" v-for="circuit in circuits">
                         <div>{{circuit.circuitName}}</div>
                     </li>
@@ -16,7 +14,7 @@
                     <li slot="results" class="driver" v-for="team in teams">
                         <div>{{team}}</div>
                     </li>
-                </search-bar>
+                </search-bar> -->
             </div>
             <div class="middleContentItem">
                 <selected-drivers :drivers="selectedDrivers"></selected-drivers>
@@ -209,36 +207,7 @@
     }
 
     .middleContentItem {
-        margin-top: 25px;
-        display: flex;
+        padding: 25px;
         width: 100%;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .driver {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        min-width: 275px;
-        cursor: pointer;
-        margin: 0px;
-        border: 1px solid #c7c7c7;
-        padding: 10px;
-    }
-
-    .driver:hover {
-        background-color: rgba(197, 202, 233, 1);
-    }
-
-    .driverContainer {
-        width: 50%;
-        text-align: start;
-        padding: 25px 15px;
-    }
-
-    .item {
-        padding: 5px;
-        line-height: 20px;
     }
 </style>
