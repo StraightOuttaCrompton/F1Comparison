@@ -2,9 +2,9 @@
     <div class="searchBarContainer">
         <input v-model="input" type="search" v-bind:id="id" v-bind:placeholder="placeholder" autocomplete="off">
         <div v-if="input != ''" class="results">
-            <loader v-if="!resultsarray || resultsarray.length == 0"></loader>
-            <div class="driver" v-for="driver in drivers" @click="selectDriver(driver)">
-                <div>{{driver.givenName}} {{driver.familyName}}</div>
+            <loader v-if="!searchspace || searchspace.length == 0"></loader>
+            <div class="driver" v-for="item in searchspace" @click="selectItem(item)">
+                <div>{{item}}</div>
             </div>
         </div>
     </div>
@@ -15,23 +15,25 @@
     let resultsElement = null;
     export default {
         name: 'search-bar',
-        props: ['placeholder','id', 'inputString', 'resultsarray'],
+        props: ['placeholder','id', 'searchspace'],
         components: {
             'loader': Loader
         },
         data() {
             return {
-                input: this.$props.inputString,
+                input: '',
             }
         },
         watch: {
             input: function () {
-                this.$emit('inputStringUpdated', this.input)
-            },
-            inputString: function () {
-                if (this.$props.inputString == "") {
-                    this.input = "";
-                }
+
+            }
+        },
+        methods: {
+            selectItem: function (item) {
+                this.input = "";
+                this.$emit('itemSelected', item)
+                console.log(item);
             },
         }
     }

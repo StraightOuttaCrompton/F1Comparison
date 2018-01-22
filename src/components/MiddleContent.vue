@@ -2,48 +2,15 @@
     <div class="middleContent flex column center">
         <div class="inner flex column">
             <div class="middleContentItem">
-                <search-bar id="DriverSearchBar" placeholder="Search for drivers..." :input-string="driverInputString" :resultsarray="drivers" @inputStringUpdated="val => driverInputString = val">
-
+                <search-bar id="DriverSearchBar" 
+                            placeholder="Search for drivers..." 
+                            v-bind:searchspace="driversSearchSpace" 
+                            @itemSelected="val => selectedDrivers.push(val)"> <!-- call function to remove item from drivers array -->
                 </search-bar>
-                <!-- <search-bar id="CircuitSearchBar" placeholder="Search for circuits..." :input-string="circuitInputString" :resultsarray="circuits" @inputStringUpdated="val => circuitInputString = val">
-                    <li slot="results" class="driver" v-for="circuit in circuits">
-                        <div>{{circuit.circuitName}}</div>
-                    </li>
-                </search-bar>
-                <search-bar id="TeamSearchBar" placeholder="Search for teams..." :input-string="teamInputString" :resultsarray="teams" @inputStringUpdated="val => teamInputString = val">
-                    <li slot="results" class="driver" v-for="team in teams">
-                        <div>{{team}}</div>
-                    </li>
-                </search-bar> -->
-            </div>
-            <div class="middleContentItem">
-                <selected-drivers :drivers="selectedDrivers"></selected-drivers>
             </div>
         </div>
     </div>
 </template>
-
-<style scoped>
-    .middleContent {
-        flex: 1 0 auto;
-    }
-
-    .inner {
-        flex: 1;
-        align-items: center;
-        max-width: 1200px;
-        width: 100%;
-        border: 1px solid #f1f1f1;
-        background-color: #ffffff;
-        box-sizing: border-box;
-    }
-
-    .middleContentItem {
-        padding: 25px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-</style>
 
 <script>
     import SearchBar from './SearchBar.vue'
@@ -53,30 +20,12 @@
         name: 'middleContent',
         components: {
             'search-bar': SearchBar,
-            'selected-drivers': SelectedDrivers
         },
         data() {
             return {
-                driverInputString: "",
                 drivers: [],
+                driversSearchSpace: [],
                 selectedDrivers: [],
-                circuitInputString: "",
-                circuits: [],
-                selectedCircuits: [],
-                teamInputString: "",
-                teams: [],
-                selectedTeams: []
-            }
-        },
-        watch: {
-            driverInputString: function () {
-                this.searchDrivers();
-            },
-            circuitInputString: function () {
-                this.searchCircuits();
-            },
-            teamInputString: function () {
-                console.log(this.teamInputString);
             }
         },
         created: function () {
@@ -84,31 +33,23 @@
             axios.get(config.f1BaseUrl + '/drivers.json?limit=1000')
                 .then(function (response) {
                     self.drivers = response.data.MRData.DriverTable.Drivers;
-                })
-                .catch(function (error) {
-                    console.error(error);
-                });
-            axios.get(config.f1BaseUrl + '/circuits.json?limit=1000')
-                .then(function (response) {
-                    self.circuits = response.data.MRData.CircuitTable.Circuits;
+                    self.setDriverSearchSpace();
                 })
                 .catch(function (error) {
                     console.error(error);
                 });
         },
         methods: {
-            selectDriver: function (driver) {
-                this.driverInputString = "";
-                this.selectedDrivers.push(driver);
-                console.log(driver);
+            setDriverSearchSpace: function () {
+                let self = this;
+                this.drivers.forEach(function (driver) {
+                    let driverFullName = driver.givenName + " " + driver.familyName;
+                    self.driversSearchSpace.push(driverFullName);
+                });
             },
             searchDrivers: function () {
                 this.indexDrivers();
                 this.sortDriversByIndex();
-            },
-            searchCircuits: function () {
-                this.indexCircuits();
-                this.sortCircuitsByIndex();
             },
             indexDrivers: function () {
                 let self = this;
@@ -119,31 +60,12 @@
                     driver.driverIndex = self.getIndex(inputWords, [driverFirstName, driverSecondName]);;
                 });
             },
-            indexCircuits: function () {
-                let self = this;
-                let inputWords = self.circuitInputString.split(" ");
-                this.circuits.forEach(function (circuit) {
-                    console.log(circuit.circuitName);
-                    circuit.circuitIndex = self.getIndex(inputWords, circuit.circuitName.split(" "));;
-                });
-            },
             sortDriversByIndex: function () {
                 this.drivers.sort(function (a, b) {
                     let i = a.driverIndex - b.driverIndex;
                     if (i == 0) {
                         if (a.familyName < b.familyName) return -1;
                         if (a.familyName > b.familyName) return 1;
-                        return 0;
-                    }
-                    return i;
-                });
-            },
-            sortCircuitsByIndex: function () {
-                this.circuits.sort(function (a, b) {
-                    let i = a.circuitIndex - b.circuitIndex;
-                    if (i == 0) {
-                        if (a.circuitName < b.circuitName) return -1;
-                        if (a.circuitName > b.circuitName) return 1;
                         return 0;
                     }
                     return i;
@@ -214,4 +136,24 @@
     };
 </script>
 
+<style scoped>
+    .middleContent {
+        flex: 1 0 auto;
+    }
 
+    .inner {
+        flex: 1;
+        align-items: center;
+        max-width: 1200px;
+        width: 100%;
+        border: 1px solid #f1f1f1;
+        background-color: #ffffff;
+        box-sizing: border-box;
+    }
+
+    .middleContentItem {
+        padding: 25px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+</style>
