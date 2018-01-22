@@ -21,6 +21,10 @@ export default {
     }
 </script>
 <style>
+    .Site {
+        min-height: 100vh;
+    }
+
     .primary {
         background-color: #3F51B5;
         color: #ffffff;
@@ -35,8 +39,8 @@ export default {
         justify-content: center;
         align-items: center;
     }
-    .Site {
-        min-height: 100vh;
+    .fullwidth {
+        width: 100%;
     }
     body,
     html {

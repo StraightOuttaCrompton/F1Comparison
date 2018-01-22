@@ -23,6 +23,28 @@
     </div>
 </template>
 
+<style scoped>
+    .middleContent {
+        flex: 1 0 auto;
+    }
+
+    .inner {
+        flex: 1;
+        align-items: center;
+        max-width: 1200px;
+        width: 100%;
+        border: 1px solid #f1f1f1;
+        background-color: #ffffff;
+        box-sizing: border-box;
+    }
+
+    .middleContentItem {
+        padding: 25px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+</style>
+
 <script>
     import SearchBar from './SearchBar.vue'
     import SelectedDrivers from './SelectedDrivers.vue'
@@ -192,22 +214,4 @@
     };
 </script>
 
-<style scoped>
-    .middleContent {
-        flex: 1;
-    }
 
-    .inner {
-        flex: 1;
-        align-items: center;
-        max-width: 1200px;
-        width: 100%;
-        border: 1px solid #f1f1f1;
-        background-color: #ffffff;
-    }
-
-    .middleContentItem {
-        padding: 25px;
-        width: 100%;
-    }
-</style>

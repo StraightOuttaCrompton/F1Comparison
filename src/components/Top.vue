@@ -1,5 +1,5 @@
 <template>
-    <div class="top flex center primary">
+    <div class="top flex center fullwidth primary">
         <div class="title">F1 Driver Comparison</div>
     </div>
 </template>
@@ -12,8 +12,9 @@
 
 <style scoped>
     .top {
-        width: 100%;
+        flex: none;
         height: 60px;
         border-bottom: 2px solid #c9c9c9;
+        box-sizing: border-box;
     }
 </style>
