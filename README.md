@@ -1,4 +1,4 @@
-# f1-comparison
+# F1 Comparison Vue App
 
 > A Vue.js project
 
